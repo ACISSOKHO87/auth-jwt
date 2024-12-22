@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const helmet = require("helmet");
 
+const usersRoutes = require("./routes/users.routes.js");
 const PORT = 9500;
 
 dotenv.config();
@@ -15,12 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(helmet());
 
+app.use("/api/user", usersRoutes);
 app.get("/api", (req, res) => {
     res.json({
         status: 200,
-        data: {
-            message: "Bienvenue sur auth with jsonwebtoken",
-        },
+        message: "Bienvenue sur auth with jsonwebtoken",
     });
 });
 
