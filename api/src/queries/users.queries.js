@@ -2,9 +2,9 @@ const User = require("../database/models/user.model");
 
 exports.createUser = async (body) => {
     try {
-        const newUser = {
+        const newUser = new User({
             ...body,
-        };
+        });
 
         return newUser.save();
     } catch (error) {

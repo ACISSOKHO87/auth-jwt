@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { findUserByEmail, createUser } = require("../queries/user.querie");
+const { findUserByEmail, createUser } = require("../queries/users.queries");
 
 exports.signup = async (req, res) => {
     try {
