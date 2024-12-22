@@ -2,8 +2,13 @@ const User = require("../database/models/user.model");
 
 exports.createUser = async (body) => {
     try {
+        const hash = await User.hashPassword(body.local.password);
         const newUser = new User({
             ...body,
+            local: {
+                email: body.local.email,
+                password: hash,
+            },
         });
 
         return newUser.save();
