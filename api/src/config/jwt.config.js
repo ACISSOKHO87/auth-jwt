@@ -10,9 +10,9 @@ exports.createJwtToken = (user) => {
 
 exports.extractUserFromToken = async (req, res, next) => {
     const { token } = req.cookies;
-    console.log("token", token);
     jwt.verify(token, secret, (err, decode) => {
         if (err) {
+            res.clearCookie("token");
             res.json({
                 status: StatusCodes.BAD_REQUEST,
                 message: "Token invalide",
