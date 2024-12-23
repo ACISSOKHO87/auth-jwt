@@ -1,8 +1,14 @@
 const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
-const { findUserByEmail, createUser } = require("../queries/users.queries");
+const {
+    findUserByEmail,
+    createUser,
+    findUserById,
+} = require("../queries/users.queries");
 const User = require("../database/models/user.model");
 const secret = "2838d531-443a-4d62-83fb-a9f1942f88c4";
+const jwtconfig = require("../config/jwt.config");
+
 exports.signup = async (req, res) => {
     try {
         const body = req.body;
@@ -33,7 +39,8 @@ exports.signin = async (req, res) => {
         if (user) {
             const compare = await user.comparePassword(password);
             if (compare) {
-                const token = jwt.sign({ sub: email._id }, secret);
+                const token = jwtconfig.createJwtToken(user);
+                res.cookie("token", token);
                 res.json({
                     status: StatusCodes.OK,
                     token,
@@ -52,6 +59,18 @@ exports.signin = async (req, res) => {
                 message: "Email ou mot de passe invalide, Veuillez réessayer",
             });
         }
+    } catch (error) {
+        throw error;
+    }
+};
+
+exports.profil = async (req, res) => {
+    try {
+        const user = await findUserById(req.userId);
+        res.json({
+            status: StatusCodes.OK,
+            user,
+        });
     } catch (error) {
         throw error;
     }
