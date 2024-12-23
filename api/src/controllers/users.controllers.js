@@ -38,7 +38,6 @@ exports.signin = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await findUserByEmail(email);
-        console.log(user);
         if (user) {
             const compare = await user.comparePassword(password);
             if (compare) {
