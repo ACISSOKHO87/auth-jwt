@@ -1,10 +1,10 @@
 const express = require("express");
-const userCtrl = require("../controllers/users.controllers");
-const jwtconfig = require("../config/jwt.config");
+const { signin, signup, profil } = require("../controllers/users.controllers");
+const { extractUserFromToken } = require("../config/jwt.config");
 
 const router = express.Router();
 
-router.post("/signup", userCtrl.signup);
-router.post("/signin", userCtrl.signin);
-router.get("/profil", jwtconfig.extractUserFromToken, userCtrl.profil);
+router.post("/signup", signup);
+router.post("/signin", signin);
+router.get("/profil", extractUserFromToken, profil);
 module.exports = router;

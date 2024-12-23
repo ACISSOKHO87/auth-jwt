@@ -7,7 +7,10 @@ const {
 } = require("../queries/users.queries");
 const User = require("../database/models/user.model");
 const secret = "2838d531-443a-4d62-83fb-a9f1942f88c4";
-const jwtconfig = require("../config/jwt.config");
+const {
+    createJwtToken,
+    extractUserFromToken,
+} = require("../config/jwt.config");
 
 exports.signup = async (req, res) => {
     try {
@@ -39,7 +42,7 @@ exports.signin = async (req, res) => {
         if (user) {
             const compare = await user.comparePassword(password);
             if (compare) {
-                const token = jwtconfig.createJwtToken(user);
+                const token = createJwtToken(user);
                 res.cookie("token", token);
                 res.json({
                     status: StatusCodes.OK,
