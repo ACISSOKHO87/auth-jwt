@@ -2,6 +2,7 @@ const express = require("express");
 const MongodbClient = require("./database/index.js");
 const { StatusCodes } = require("http-status-codes");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 
@@ -11,6 +12,7 @@ const PORT = 9500;
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

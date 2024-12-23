@@ -17,6 +17,7 @@ exports.signup = async (req, res) => {
             res.json({
                 status: StatusCodes.CREATED,
                 message: "User enregistré avec succès",
+                userSaved,
             });
         }
     } catch (error) {
