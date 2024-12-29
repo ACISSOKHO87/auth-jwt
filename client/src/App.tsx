@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
+
+import styles from "./App.module.scss";
+import { lazy } from "react";
+
+const Home = lazy(() => import("./pages/home/Home"));
+const Signup = lazy(() => import("./pages/signup/Signup"));
+const Signin = lazy(() => import("./pages/signin/Signin"));
+const AuthRequire = lazy(() => import("./helpers/AuthRequire"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <div className={` d-flex flex-column   ${styles.appContainer}`}>
+            <Header />
+            <div className="flex-fill d-flex flex-column">
+                <Routes>
+                    <Route path="/" element={<AuthRequire child={Home} />} />
+                    <Route
+                        path="/signin"
+                        element={<AuthRequire child={Signin} />}
+                    />
+                    <Route
+                        path="/signup"
+                        element={<AuthRequire child={Signup} />}
+                    />
+                    <Route
+                        path="/profile"
+                        element={<AuthRequire child={Profile} />}
+                    />
+                </Routes>
+            </div>
+            <Footer />
+        </div>
+    );
 }
 
-export default App
+export default App;
