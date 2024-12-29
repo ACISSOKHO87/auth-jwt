@@ -1,5 +1,6 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Model, Schema } from "mongoose";
 import { IUser } from "../../interface/user.interface";
+import bcrypt from "bcrypt";
 const userSchema = new Schema(
     {
         name: { type: String, required: true },
@@ -11,4 +12,23 @@ const userSchema = new Schema(
     { collection: "users" }
 );
 
-export const User = mongoose.model<IUser>("user", userSchema);
+userSchema.statics.hashPassword = async (password: string) => {
+    try {
+        const hash = await bcrypt.hash(password, 12);
+        return hash;
+    } catch (error) {
+        throw error;
+    }
+};
+
+userSchema.methods.comparePassword = (
+    password: string,
+    hashPassword: string
+) => {
+    return bcrypt.compare(password, hashPassword);
+};
+
+interface IUserModel extends Model<IUser> {
+    hashPassword: (password: string) => string;
+}
+export const User = mongoose.model<IUser, IUserModel>("user", userSchema);
