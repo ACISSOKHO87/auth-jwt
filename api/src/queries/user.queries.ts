@@ -5,7 +5,7 @@ export const createUser = async (user: UserForm) => {
     try {
         const hash = await User.hashPassword(user.password);
         const newUser = new User({
-            name: user.userName,
+            userName: user.userName,
             local: {
                 email: user.email,
                 password: hash,

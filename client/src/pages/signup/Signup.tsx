@@ -47,7 +47,7 @@ export default function Signup() {
         try {
             clearErrors();
             await signup(data);
-            navigate("/profile");
+            navigate("/signin");
         } catch (message) {
             console.log(message);
             //setError("email" { type: "generic", message });
