@@ -3,5 +3,6 @@ namespace NodeJS {
         [key: string]: string | undefined;
         MONGO_URL: string;
         SECRET: string;
+        PORT: string;
     }
 }

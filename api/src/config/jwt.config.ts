@@ -16,7 +16,7 @@ export const createJwtToken = (user: IUser) => {
     return jwtToken;
 };
 
-exports.extractUserFromToken = async (
+export const extractUserFromToken = async (
     req: Request,
     res: Response,
     next: NextFunction

@@ -1,13 +1,13 @@
 import { User } from "../database/model/user.model";
 import { UserForm } from "../interface/user.interface";
 
-export const createUser = async (body: UserForm) => {
+export const createUser = async (user: UserForm) => {
     try {
-        const hash = await User.hashPassword(body.password);
+        const hash = await User.hashPassword(user.password);
         const newUser = new User({
-            name: body.name,
+            name: user.userName,
             local: {
-                email: body.email,
+                email: user.email,
                 password: hash,
             },
         });
