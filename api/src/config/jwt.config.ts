@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IUser } from "../interface/user.interface";
 
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 const { StatusCodes } = require("http-status-codes");
 
 export const createJwtToken = (user: IUser) => {
@@ -11,7 +11,7 @@ export const createJwtToken = (user: IUser) => {
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // durée de validité 24h
             algorithm: "RS256",
         },
-        process.env.SECRET
+        process.env.SECRET!
     );
     return jwtToken;
 };
@@ -22,16 +22,23 @@ export const extractUserFromToken = async (
     next: NextFunction
 ) => {
     const { token } = req.cookies;
-    jwt.verify(token, process.env.SECRET, (err: any, decode: any) => {
-        if (err) {
-            res.clearCookie("token");
-            res.json({
-                status: StatusCodes.UNAUTHORIZED,
-                message: "Token invalide",
-            });
-        } else {
-            req.body.userId = decode.sub;
-            next();
-        }
-    });
+    if (token) {
+        jwt.verify(token, process.env.SECRET!, (err: any, decode: any) => {
+            if (err) {
+                res.clearCookie("token");
+                res.json({
+                    status: StatusCodes.UNAUTHORIZED,
+                    message: "Token invalide",
+                });
+            } else {
+                req.body.userId = decode.sub;
+                next();
+            }
+        });
+    } else {
+        res.json({
+            status: StatusCodes.NOT_FOUND,
+            user: null,
+        });
+    }
 };

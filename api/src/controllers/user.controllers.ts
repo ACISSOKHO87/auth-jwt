@@ -47,10 +47,10 @@ export const signin = async (req: Request, res: Response) => {
                 password,
                 user.local.password
             );
-            console.log(compare);
+
             if (compare) {
                 const token = createJwtToken(user);
-                res.cookie("token", token, { httpOnly: true });
+                res.cookie("token", token, { path: "/", httpOnly: true });
                 res.json({
                     status: StatusCodes.OK,
                     user,

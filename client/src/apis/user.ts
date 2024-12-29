@@ -24,6 +24,7 @@ export async function signin(data: IUserLocal) {
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(data),
     });
 
@@ -37,6 +38,7 @@ export async function signin(data: IUserLocal) {
 
 export async function signout() {
     await fetch(` ${import.meta.env.VITE_APP_API_URL}/signout`, {
+        credentials: "include",
         method: "DELETE",
     });
 }
