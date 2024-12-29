@@ -43,7 +43,7 @@ exports.signin = async (req: Request, res: Response) => {
             );
             console.log(compare);
             if (compare) {
-                const token = createJwtToken(user._id);
+                const token = createJwtToken(user);
                 res.cookie("token", token, { httpOnly: true });
                 res.json({
                     status: StatusCodes.OK,
