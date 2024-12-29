@@ -1,0 +1,49 @@
+@use "../../assets/styles/mixins" as mixin;
+
+.header {
+    position: relative;
+    padding: 10px 20px;
+    height: 58px;
+    background-color: white;
+    box-shadow: var(--box-shadow-nav);
+    color: var(--primary);
+    img {
+        display: block;
+        max-width: 40px;
+        cursor: pointer;
+        border-radius: 100%;
+    }
+    a {
+        font-size: 18px;
+        font-weight: 500;
+    }
+}
+
+.headerDesktop {
+    @include mixin.xs {
+        display: none;
+    }
+}
+
+.headerMobile {
+    display: none !important;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    &:hover {
+        opacity: 0.8;
+    }
+    @include mixin.xs {
+        display: block !important;
+    }
+}
+
+.menu {
+    display: none;
+    @include mixin.xs {
+        display: block;
+        width: 19px;
+        height: 19px;
+        font-size: 16px;
+        line-height: 1.875;
+    }
+}
