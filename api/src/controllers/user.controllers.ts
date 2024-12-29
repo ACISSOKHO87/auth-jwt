@@ -3,12 +3,17 @@ import { StatusCodes } from "http-status-codes";
 
 import { Request, Response } from "express";
 
-import { findUserByEmail, createUser } from "../queries/user.queries";
+import {
+    findUserByEmail,
+    createUser,
+    findUserById,
+} from "../queries/user.queries";
 import { createJwtToken } from "../config/jwt.config";
+import { UserForm } from "../interface/user.interface";
 
 export const signup = async (req: Request, res: Response) => {
+    const body: UserForm = req.body;
     try {
-        const body = req.body;
         const user = await findUserByEmail(body.email);
         if (user) {
             res.json({
@@ -32,7 +37,8 @@ export const signup = async (req: Request, res: Response) => {
     }
 };
 
-exports.signin = async (req: Request, res: Response) => {
+export const signin = async (req: Request, res: Response) => {
+    console.log("req.body: ", req.body);
     try {
         const { email, password } = req.body;
         const user = await findUserByEmail(email);
@@ -65,25 +71,25 @@ exports.signin = async (req: Request, res: Response) => {
     } catch (error) {
         res.json({
             status: StatusCodes.BAD_REQUEST,
-            message: "Email ou mot de passe invalide, Veuillez réessayer",
+            message: "Incident, veuillez réessayez plus tart",
         });
     }
 };
 
-// exports.currentUser = async (req: Request, res: Response) => {
-//     const userId = req.userId;
-//     try {
-//         const user = await findUserById(userId);
-//         res.json({
-//             status: StatusCodes.OK,
-//             user,
-//         });
-//     } catch (error) {
-//         throw error;
-//     }
-// };
+export const currentUser = async (req: Request, res: Response) => {
+    const userId = req.body.userId;
+    try {
+        const user = await findUserById(userId);
+        res.json({
+            status: StatusCodes.OK,
+            user,
+        });
+    } catch (error) {
+        throw error;
+    }
+};
 
-exports.signout = (_: Request, res: Response) => {
+export const signout = (_: Request, res: Response) => {
     res.clearCookie("token");
     res.json({
         status: StatusCodes.OK,

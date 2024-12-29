@@ -1,16 +1,13 @@
-import { Document } from "mongoose";
 export interface IUserLocal {
     email: string;
     password: string;
 }
 
-export interface IUser extends Document {
+export interface IUser {
+    _id?: string;
     userName: string;
     local: IUserLocal;
-    comparePassword: (
-        password: string,
-        hashedPassword: string
-    ) => Promise<boolean>;
+    _v?: string;
 }
 
 export interface UserForm {
