@@ -32,7 +32,11 @@ export async function signin(data: IUserLocal) {
     if (response.ok) {
         return body;
     } else {
-        throw body;
+        if (body) {
+            throw body;
+        } else {
+            throw new Error("Incident, une erreur est survenue");
+        }
     }
 }
 

@@ -4,5 +4,7 @@ namespace NodeJS {
         MONGO_URL: string;
         SECRET: string;
         PORT: string;
+        DB_USER: string;
+        DB_PASS: string;
     }
 }

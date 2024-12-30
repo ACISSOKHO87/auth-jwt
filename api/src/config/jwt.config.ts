@@ -1,8 +1,6 @@
-import { NextFunction, Request, Response } from "express";
 import { IUser } from "../interface/user.interface";
 
 import jwt from "jsonwebtoken";
-const { StatusCodes } = require("http-status-codes");
 
 export const createJwtToken = (user: IUser) => {
     const jwtToken = jwt.sign(
@@ -16,29 +14,23 @@ export const createJwtToken = (user: IUser) => {
     return jwtToken;
 };
 
-export const extractUserFromToken = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    const { token } = req.cookies;
-    if (token) {
-        jwt.verify(token, process.env.SECRET!, (err: any, decode: any) => {
-            if (err) {
-                res.clearCookie("token");
-                res.json({
-                    status: StatusCodes.UNAUTHORIZED,
-                    message: "Token invalide",
-                });
-            } else {
-                req.body.userId = decode.sub;
-                next();
-            }
-        });
-    } else {
-        res.json({
-            status: StatusCodes.NOT_FOUND,
-            user: null,
-        });
-    }
-};
+// export const extractUserFromToken = async (
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+// ) => {
+//     const { token } = req.cookies;
+//     if (token) {
+//         jwt.verify(token, process.env.SECRET!, (err: any, decode: any) => {
+//             if (err) {
+//                 res.clearCookie("token");
+//                 res.status(StatusCodes.UNAUTHORIZED).json("Token invalide");
+//             } else {
+//                 req.body.userId = decode.sub;
+//                 next();
+//             }
+//         });
+//     } else {
+//         res.status(StatusCodes.NOT_FOUND).json(null);
+//     }
+// };
