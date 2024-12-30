@@ -30,7 +30,7 @@ export default function Signin() {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-        //setError,
+        setError,
         clearErrors,
     } = useForm<IUserLocal>({
         defaultValues: {
@@ -43,9 +43,8 @@ export default function Signin() {
         try {
             clearErrors();
             await signin(data);
-        } catch (message) {
-            console.log(message);
-            //setError("email" { type: "generic", message });
+        } catch (message: any) {
+            setError("password", { type: "password", message });
         }
     });
 

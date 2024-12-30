@@ -5,13 +5,12 @@ import {
     signout,
     currentUser,
 } from "../controllers/user.controllers";
-import { extractUserFromToken } from "../config/jwt.config";
 
 const router = Router();
 
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.get("/current", extractUserFromToken, currentUser);
+router.get("/current", currentUser);
 router.delete("/signout", signout);
 
 export default router;

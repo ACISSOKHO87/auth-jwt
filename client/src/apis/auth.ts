@@ -5,5 +5,5 @@ export async function getCurrentUser() {
             credentials: "include",
         }
     );
-    return response.json();
+    return await response.json();
 }

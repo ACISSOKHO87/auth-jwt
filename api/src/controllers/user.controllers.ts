@@ -1,7 +1,6 @@
 import { StatusCodes } from "http-status-codes";
-// import { User } from "../database/model/user.model";
-
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 import {
     findUserByEmail,
@@ -38,7 +37,6 @@ export const signup = async (req: Request, res: Response) => {
 };
 
 export const signin = async (req: Request, res: Response) => {
-    console.log("req.body: ", req.body);
     try {
         const { email, password } = req.body;
         const user = await findUserByEmail(email);
@@ -47,52 +45,43 @@ export const signin = async (req: Request, res: Response) => {
                 password,
                 user.local.password
             );
-
             if (compare) {
                 const token = createJwtToken(user);
                 res.cookie("token", token, { path: "/", httpOnly: true });
-                res.json({
-                    status: StatusCodes.OK,
-                    user,
-                });
+                res.json(user);
             } else {
-                res.json({
-                    status: StatusCodes.BAD_REQUEST,
-                    message:
-                        "Email ou mot de passe invalide, Veuillez réessayer",
-                });
+                res.status(StatusCodes.BAD_REQUEST).json(
+                    "Email ou mot de passe invalide"
+                );
             }
         } else {
-            res.json({
-                status: StatusCodes.BAD_REQUEST,
-                message: "Email ou mot de passe invalide, Veuillez réessayer",
-            });
+            res.status(StatusCodes.BAD_REQUEST).json(
+                "Email ou mot de passe invalide"
+            );
         }
     } catch (error) {
-        res.json({
-            status: StatusCodes.BAD_REQUEST,
-            message: "Incident, veuillez réessayez plus tart",
-        });
+        res.status(StatusCodes.BAD_REQUEST).json(
+            "Email ou mot de passe invalide"
+        );
     }
 };
 
 export const currentUser = async (req: Request, res: Response) => {
-    const userId = req.body.userId;
+    const { token } = req.cookies;
     try {
-        const user = await findUserById(userId);
-        res.json({
-            status: StatusCodes.OK,
-            user,
-        });
+        const decodeToken = jwt.verify(token, process.env.SECRET!);
+        const user = await findUserById(decodeToken.sub as string);
+        if (user) {
+            res.json(user);
+        } else {
+            res.json(null);
+        }
     } catch (error) {
-        throw error;
+        res.json(null);
     }
 };
 
 export const signout = (_: Request, res: Response) => {
     res.clearCookie("token");
-    res.json({
-        status: StatusCodes.OK,
-        message: "User déconnecté",
-    });
+    res.end();
 };

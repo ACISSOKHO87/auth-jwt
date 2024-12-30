@@ -4,7 +4,6 @@ import styles from "./Profile.module.scss";
 
 export default function Profile() {
     const { user } = useContext(AuthContext);
-    console.log(user);
     return (
         <div className="flex-fill d-flex justify-content-center align-items-center">
             <div className={`${styles.profileContainer} card p-20`}>

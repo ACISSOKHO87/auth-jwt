@@ -12,18 +12,17 @@ export default function AuthProvider({ children }: props) {
 
     async function signin(credentials: IUserLocal) {
         const newUser = await login(credentials);
-        setUser(newUser);
+        setUser((currentUser) => (currentUser = newUser));
     }
 
     async function signout() {
         await logout();
-        setUser(null);
+        setUser((currentUser) => (currentUser = null));
     }
 
     useEffect(() => {
         getCurrentUser().then((res) => {
-            console.log("res.user", res.user);
-            setUser(res.user);
+            setUser((current) => (current = res));
         });
     }, []);
     return (
